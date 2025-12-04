@@ -16,4 +16,6 @@ public interface FlightClient {
 
     @PostMapping("/api/v1.0/flight/{id}/release")
     void releaseSeats(@PathVariable String id, @RequestBody ReserveRequest req);
+
 }
+

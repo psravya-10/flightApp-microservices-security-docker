@@ -6,6 +6,9 @@ import com.flightapp.booking.exception.*;
 import com.flightapp.booking.repository.BookingRepository;
 import com.flightapp.booking.feign.FlightClient;
 import com.flightapp.booking.util.PnrGenerator;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +27,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @CircuitBreaker(name = "flightService", fallbackMethod = "flightServiceFallback")
     public TicketResponse bookTicket(String flightId, BookingRequest req) {
 
         FlightSearchResponse flight = flightClient.getFlightById(flightId);
@@ -56,6 +60,15 @@ public class BookingServiceImpl implements BookingService {
         Booking saved = bookingRepo.save(b);
 
         return toResponse(saved, flight);
+    }
+    public TicketResponse flightServiceFallback(String flightId,
+            BookingRequest req,
+            Throwable ex) {
+
+        System.out.println("CIRCUIT BREAKER ACTIVATED — FLIGHT SERVICE DOWN!");
+        System.out.println("Reason: " + ex.getMessage());
+        throw new RuntimeException("Flight service unavailable. Please try again later.");
+        
     }
 
     @Override

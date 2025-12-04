@@ -1,9 +1,13 @@
 package com.flightapp.booking.dto;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PassengerDto {
 
     @NotBlank(message = "Name cannot be empty")

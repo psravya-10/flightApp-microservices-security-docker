@@ -9,7 +9,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1.0/flight")
+@RequestMapping("/api/flight")
 public class FlightController {
 
     private final FlightService service;

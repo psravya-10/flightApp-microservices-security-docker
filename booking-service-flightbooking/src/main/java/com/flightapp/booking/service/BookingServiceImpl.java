@@ -27,7 +27,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    @CircuitBreaker(name = "flightService", fallbackMethod = "flightServiceFallback")
+    @CircuitBreaker(name = "flightCB", fallbackMethod = "flightServiceFallback")
     public TicketResponse bookTicket(String flightId, BookingRequest req) {
 
         FlightSearchResponse flight = flightClient.getFlightById(flightId);
@@ -61,15 +61,17 @@ public class BookingServiceImpl implements BookingService {
 
         return toResponse(saved, flight);
     }
-    public TicketResponse flightServiceFallback(String flightId,
-            BookingRequest req,
-            Throwable ex) {
+    public TicketResponse flightServiceFallback(String flightId, BookingRequest req, Throwable ex) {
+        System.out.println("CIRCUIT BREAKER TRIGGERED: Flight Service DOWN");
+        System.out.println(" Reason: " + ex.getMessage()); 
+        TicketResponse r = new TicketResponse();
+        r.setPnr("N/A");
+        r.setCustomerName(req.getCustomerName());
 
-        System.out.println("CIRCUIT BREAKER ACTIVATED — FLIGHT SERVICE DOWN!");
-        System.out.println("Reason: " + ex.getMessage());
-        throw new RuntimeException("Flight service unavailable. Please try again later.");
-        
+        return r;
     }
+
+
 
     @Override
     public TicketResponse getTicketByPnr(String pnr) {

@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(name = "flight-service-flightbooking")
 public interface FlightClient {
 
-    @GetMapping("/api/v1.0/flight/{id}")
+    @GetMapping("/api/flight/{id}")
     FlightSearchResponse getFlightById(@PathVariable String id);
 
-    @PostMapping("/api/v1.0/flight/{id}/reserve")
+    @PostMapping("/api/flight/{id}/reserve")
     void reserveSeats(@PathVariable String id, @RequestBody ReserveRequest req);
 
-    @PostMapping("/api/v1.0/flight/{id}/release")
+    @PostMapping("/api/flight/{id}/release")
     void releaseSeats(@PathVariable String id, @RequestBody ReserveRequest req);
 
 }

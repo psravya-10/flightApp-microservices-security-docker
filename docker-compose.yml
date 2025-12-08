@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  # ===================== MONGO =====================
+
   mongo:
     image: mongo:6
     container_name: mongo
@@ -11,7 +11,6 @@ services:
     volumes:
       - mongo_data:/data/db
 
-  # ===================== RABBITMQ =====================
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -22,7 +21,6 @@ services:
     volumes:
       - rabbit_data:/var/lib/rabbitmq
 
-  # ===================== EUREKA =====================
   eureka:
     build:
       context: ./eureka-server-flightbooking
@@ -34,7 +32,6 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
 
-  # ===================== CONFIG SERVER =====================
   config-server:
     build:
       context: ./config-server-flightbooking
@@ -46,10 +43,9 @@ services:
     ports:
       - "8888:8888"
     environment:
-      # point config server to Eureka inside docker
+  
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
 
-  # ===================== AUTH SERVICE =====================
   auth-service:
     build:
       context: ./auth-service-flightbooking
@@ -64,7 +60,6 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
 
-  # ===================== FLIGHT SERVICE =====================
   flight-service:
     build:
       context: ./flight-service-flightbooking
@@ -78,7 +73,6 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
 
-  # ===================== BOOKING SERVICE =====================
   booking-service:
     build:
       context: ./booking-service-flightbooking
@@ -93,7 +87,6 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
 
-  # ===================== API GATEWAY =====================
   api-gateway:
     build:
       context: ./api-gateway-flightbooking

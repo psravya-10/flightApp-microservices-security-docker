@@ -1,0 +1,12 @@
+/.metadata/
+.idea/
+*.iml
+*.ipr
+*.iws
+.settings/
+.project
+.classpath
+.DS_Store
+Thumbs.db
+target/
+!.mvn/wrapper/maven-wrapper.jar

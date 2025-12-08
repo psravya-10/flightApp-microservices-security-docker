@@ -6,7 +6,6 @@ COPY src ./src
 
 RUN mvn -q -DskipTests package
 
-# ===== RUNTIME STAGE =====
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 

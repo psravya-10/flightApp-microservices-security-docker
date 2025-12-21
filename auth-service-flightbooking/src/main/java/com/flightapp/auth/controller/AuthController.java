@@ -1,5 +1,6 @@
 package com.flightapp.auth.controller;
 
+import com.flightapp.auth.payload.ChangePasswordRequest;
 import com.flightapp.auth.payload.JwtResponse;
 import com.flightapp.auth.payload.LoginRequest;
 import com.flightapp.auth.payload.MessageResponse;
@@ -8,6 +9,7 @@ import com.flightapp.auth.service.AuthService;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,4 +37,16 @@ public class AuthController {
         JwtResponse response = authService.login(request);
         return ResponseEntity.ok(response);
     }
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(
+            @RequestBody @Valid ChangePasswordRequest request,
+            Authentication authentication) {
+
+        authService.changePassword(authentication.getName(), request);
+        return ResponseEntity.ok(new MessageResponse("Password changed successfully"));
+    }
+
+
+
+
 }

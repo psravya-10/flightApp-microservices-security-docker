@@ -31,7 +31,7 @@ services:
       - "8761:8761"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
 
   config-server:
     build:
@@ -39,12 +39,12 @@ services:
       dockerfile: Dockerfile
     container_name: config-server
     restart: always
-    depends_on:
-      - eureka
+    # depends_on:
+      # - eureka
     ports:
       - "8888:8888"
     environment:
-  
+      - SPRING_PROFILES_ACTIVE=docker
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
 
   auth-service:

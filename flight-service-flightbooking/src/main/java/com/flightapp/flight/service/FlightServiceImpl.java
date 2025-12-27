@@ -81,6 +81,7 @@ public class FlightServiceImpl implements FlightService {
             r.setPriceRoundTrip(f.getPriceRoundTrip());
             r.setTripType(f.getTripType());
             r.setAvailableSeats(f.getAvailableSeats());
+            r.setTotalSeats(f.getTotalSeats());
             r.setFromPlace(f.getFromPlace());
             r.setToPlace(f.getToPlace());
             return r;
@@ -101,6 +102,7 @@ public class FlightServiceImpl implements FlightService {
         r.setPriceRoundTrip(f.getPriceRoundTrip());
         r.setTripType(f.getTripType());
         r.setAvailableSeats(f.getAvailableSeats());
+        r.setTotalSeats(f.getTotalSeats());
         r.setFromPlace(f.getFromPlace());
         r.setToPlace(f.getToPlace());
         return r;

@@ -1,5 +1,6 @@
 package com.flightapp.auth.service;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -60,25 +61,32 @@ public class AuthService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .roles(roles)
+                .passwordLastChangedAt(LocalDateTime.now())
                 .build();
 
         userRepository.save(user);
     }
+    private boolean isPasswordExpired(User user) {
+        if (user.getPasswordLastChangedAt() == null) return true;
+
+        return user.getPasswordLastChangedAt()
+                .isBefore(LocalDateTime.now().minusSeconds(30));    
+    
+    }
+
 
     public JwtResponse login(LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
         CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
-        User user = User.builder()
-                .id(null)
-                .username(principal.getDisplayName())
-                .email(principal.getUsername())
-                .roles(principal.getRoles())
-                .build();
+        User user = userRepository.findByEmail(principal.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        
+        boolean passwordExpired = isPasswordExpired(user);
 
         String token = jwtUtils.generateToken(user);
-        return new JwtResponse(token, user.getUsername(), user.getEmail(), user.getRoles());
+        return new JwtResponse(token, user.getUsername(), user.getEmail(), user.getRoles(), passwordExpired);
     }
   
 
@@ -122,6 +130,7 @@ public class AuthService {
 
      
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.setPasswordLastChangedAt(LocalDateTime.now());
         userRepository.save(user);
     }
 

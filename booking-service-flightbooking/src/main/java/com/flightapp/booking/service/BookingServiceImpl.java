@@ -152,4 +152,13 @@ public class BookingServiceImpl implements BookingService {
 
         return r;
     }
+    @Override
+    public List<String> getBookedSeats(String flightId) {
+        return bookingRepo.findByFlightIdAndCancelledFalse(flightId)
+                .stream()
+                .flatMap(b -> Arrays.stream(b.getSeatNumbers().split(",")))
+                .map(String::trim)
+                .toList();
+    }
+
 }

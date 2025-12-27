@@ -38,4 +38,9 @@ public class BookingController {
         service.cancelTicket(pnr);
         return ResponseEntity.ok("Ticket cancelled successfully");
     }
+    @GetMapping("/seats/{flightId}")
+    public ResponseEntity<List<String>> getBookedSeats(@PathVariable String flightId) {
+        return ResponseEntity.ok(service.getBookedSeats(flightId));
+    }
+
 }

@@ -13,6 +13,7 @@ public class FlightSearchResponse {
     private Double priceRoundTrip;
     private String tripType;
     private int availableSeats;
+    private int totalSeats;
     private String fromPlace;
     private String toPlace;
 }

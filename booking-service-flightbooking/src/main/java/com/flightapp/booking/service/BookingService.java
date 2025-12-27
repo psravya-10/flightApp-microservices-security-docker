@@ -8,4 +8,7 @@ public interface BookingService {
     TicketResponse getTicketByPnr(String pnr);
     List<TicketResponse> getHistory(String email);
     void cancelTicket(String pnr);
+    List<String> getBookedSeats(String flightId);
+   
+
 }

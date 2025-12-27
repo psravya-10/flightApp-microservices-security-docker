@@ -1,6 +1,8 @@
 package com.flightapp.auth.model;
 
 import java.util.Set;
+import java.time.LocalDateTime;
+
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -27,4 +29,5 @@ public class User {
     private String password;
 
     private Set<String> roles; 
+    private LocalDateTime passwordLastChangedAt;
 }
